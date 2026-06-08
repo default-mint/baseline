@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shipping Policy | Baseline</title>
+<meta name="description" content="Shipping rates and delivery times for Baseline. Free standard shipping across the United States over $100.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #1B6FB3; --blue-deep: #145488; --blue-soft: #E3EEF7;
+    --white: #F7F9FB; --paper: #FFFFFF; --yellow: #E7C649; --graphite: #1A1D21;
+    --ink-soft: rgba(26,29,33,0.62); --line: rgba(26,29,33,0.14); --line-soft: rgba(26,29,33,0.07);
+    --display: 'Familjen Grotesk', system-ui, sans-serif; --body: 'Sora', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--body); color: var(--graphite); background: var(--white); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 16px clamp(18px,4vw,56px); border-bottom: 1px solid var(--line-soft); background: var(--white); position: sticky; top: 0; z-index: 50; }
+  .wordmark { font-family: var(--display); font-weight: 700; font-size: 24px; text-decoration: none; display:flex; align-items:center; gap:9px; }
+  .wordmark .mk-dot { width: 12px; height: 12px; border-radius: 999px; background: var(--yellow); border: 2px solid var(--blue); display:inline-block; }
+  .navlinks { display: flex; gap: clamp(14px,2.2vw,30px); font-size: 13px; font-weight: 500; }
+  .navlinks a { text-decoration: none; transition: color .2s; }
+  .navlinks a:hover { color: var(--blue); }
+  @media (max-width: 760px) { .navlinks { display: none; } }
+
+  .policy-hero { padding: clamp(52px,9vw,110px) clamp(18px,4vw,56px) clamp(36px,5vw,64px); text-align: center; background: var(--paper); border-bottom: 1px solid var(--line-soft); }
+  .policy-eyebrow { font-size: 11px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--blue); font-weight: 600; margin-bottom: 16px; }
+  .policy-title { font-family: var(--display); font-weight: 700; font-size: clamp(40px,6vw,76px); line-height: 1; letter-spacing: -0.01em; }
+  .policy-updated { font-size: 12px; color: var(--ink-soft); margin-top: 16px; }
+
+  .policy { max-width: 760px; margin: 0 auto; padding: clamp(44px,6vw,88px) clamp(18px,4vw,32px) clamp(64px,8vw,120px); }
+  .policy h2 { font-family: var(--display); font-weight: 600; font-size: clamp(24px,2.6vw,32px); line-height: 1.15; margin: clamp(32px,5vw,52px) 0 clamp(14px,2vw,20px); }
+  .policy h2:first-child { margin-top: 0; }
+  .policy p { font-size: 15px; margin-bottom: 14px; line-height: 1.75; }
+  .policy a { color: var(--blue-deep); text-decoration: underline; text-underline-offset: 3px; }
+  table.ship { width: 100%; border-collapse: collapse; margin: 16px 0 22px; font-size: 14px; }
+  table.ship th, table.ship td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line-soft); }
+  table.ship th { background: var(--blue-soft); font-weight: 600; letter-spacing: 0.06em; font-size: 11px; text-transform: uppercase; color: var(--graphite); }
+  table.ship td:last-child { white-space: nowrap; }
+
+  footer { background: var(--graphite); color: var(--white); padding: clamp(52px,7vw,92px) clamp(18px,4vw,56px) 30px; }
+  .foot-grid { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: clamp(28px,5vw,72px); padding-bottom: 44px; border-bottom: 1px solid rgba(255,255,255,0.16); }
+  @media (max-width: 880px) { .foot-grid { grid-template-columns: 1fr 1fr; gap: 30px; } }
+  .foot-mark { font-family: var(--display); font-weight: 700; font-size: 28px; margin-bottom: 14px; display:flex; align-items:center; gap:9px; }
+  .foot-mark .mk-dot { width: 11px; height: 11px; border-radius: 999px; background: var(--yellow); border: 2px solid var(--blue); display:inline-block; }
+  .foot-blurb { font-size: 13px; line-height: 1.7; color: rgba(255,255,255,0.6); max-width: 300px; }
+  .foot-h { font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--yellow); margin-bottom: 16px; font-weight: 600; }
+  .foot-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .foot-list a { font-size: 13px; color: rgba(255,255,255,0.78); text-decoration: none; transition: color .2s; }
+  .foot-list a:hover { color: #fff; }
+  .foot-bottom { max-width: 1320px; margin: 22px auto 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 11px; color: rgba(255,255,255,0.5); }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a href="index.html" class="wordmark"><span class="mk-dot"></span>Baseline</a>
+  <nav class="navlinks">
+    <a href="index.html#circulation">Circulation</a>
+    <a href="index.html#oncourt">On-Court Gear</a>
+    <a href="index.html#essentials">Essentials</a>
+  </nav>
+</header>
+
+<section class="policy-hero">
+  <p class="policy-eyebrow">Help</p>
+  <h1 class="policy-title">Shipping</h1>
+  <p class="policy-updated">Last updated: January 2026</p>
+</section>
+
+<article class="policy">
+
+  <p>At Baseline, we aim to process and deliver your order as quickly and reliably as possible. Please review our shipping terms below.</p>
+
+  <h2>Order Processing Time</h2>
+
+  <p>All orders are processed within 1 business day after successful payment confirmation (excluding weekends and US public holidays). Once your order has been processed and dispatched, you will receive a shipment confirmation email with tracking.</p>
+
+  <h2>Delivery Timeframes</h2>
+
+  <p>We ship orders using trusted carrier partners: USPS, UPS, and FedEx. The shipping carrier is selected automatically based on your delivery location and operational availability.</p>
+
+  <p>Estimated delivery times after dispatch:</p>
+
+  <table class="ship">
+    <thead>
+      <tr><th>Region</th><th>Estimated Delivery</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Continental United States</td><td>4-7 business days</td></tr>
+      <tr><td>Alaska &amp; Hawaii</td><td>7-10 business days</td></tr>
+      <tr><td>US Territories (PR, GU, etc.)</td><td>10-14 business days</td></tr>
+    </tbody>
+  </table>
+
+  <p>Delivery times are estimates and may vary due to carrier operations, public holidays, or circumstances beyond our control.</p>
+
+  <h2>Shipping Fees</h2>
+
+  <p>Baseline offers <strong>free standard shipping on US orders over $100</strong>. Orders below $100 carry a flat $7.99 standard shipping fee. Expedited shipping options, where available, are displayed at checkout and apply only to the specific offer selected at the time of purchase. All applicable shipping costs are shown before payment is completed.</p>
+
+  <h2>International Shipping</h2>
+
+  <p>Baseline ships within the United States only. We hope to open international shipping in the future. Sign up at checkout for early access.</p>
+
+  <h2>Failed or Delayed Deliveries</h2>
+
+  <p>If your order has not been delivered within the estimated delivery timeframe, please contact our customer support team. If an order is confirmed as lost in transit or cannot be delivered, you may request a full refund in accordance with applicable consumer protection laws.</p>
+
+  <h2>Incorrect Address Information</h2>
+
+  <p>Customers are responsible for providing accurate and complete shipping details at checkout. We are not responsible for delivery delays or non-delivery caused by incorrect or incomplete address information. If a parcel is returned to us due to an undeliverable address, we will contact you to arrange re-shipment at the original shipping cost.</p>
+
+  <h2>Contact Us</h2>
+
+  <p>If you have any questions regarding shipping or delivery, please contact our customer support team at <a href="mailto:help@baseline.com">help@baseline.com</a>.</p>
+
+</article>
+
+<footer>
+  <div class="foot-grid">
+    <div>
+      <div class="foot-mark"><span class="mk-dot"></span>Baseline</div>
+      <p class="foot-blurb">A court-sport gear shop. A short, honest kit and Circulation, our blood-flow support for players. Free US shipping over $100.</p>
+    </div>
+    <div>
+      <p class="foot-h">Shop</p>
+      <ul class="foot-list">
+        <li><a href="index.html#circulation">Circulation</a></li>
+        <li><a href="index.html#oncourt">On-Court Gear</a></li>
+        <li><a href="index.html#essentials">Carry &amp; Recover</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="foot-h">Help</p>
+      <ul class="foot-list">
+        <li><a href="shipping.html">Shipping</a></li>
+        <li><a href="returns.html">Returns</a></li>
+        <li><a href="mailto:help@baseline.com">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="foot-h">Legal</p>
+      <ul class="foot-list">
+        <li><a href="terms.html">Terms</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> PLACEHOLDER LLC</span>
+    <span>123 Main Street, Placeholder, State 10101</span>
+  </div>
+</footer>
+
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
