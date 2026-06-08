@@ -383,7 +383,7 @@
 <div class="b-loud">
   <div class="b-loud-track">
     <span class="loud-msg active"><span class="ball"></span>Free Shipping on Orders Over $100</span>
-    <span class="loud-msg"><span class="ball"></span>Circulation 3-Pack: $99, That’s $33 a Bottle</span>
+    <span class="loud-msg"><span class="ball"></span>Circulation 3 Bottles: $240, That's $80 a Bottle</span>
     <span class="loud-msg"><span class="ball"></span>New Court Gear Drop: The Baseline Kit</span>
     <span class="loud-msg"><span class="ball"></span>Code BAS10 for 10% Off at Checkout</span>
     <span class="loud-msg"><span class="ball"></span>30-Day Returns on Every Order</span>
@@ -444,11 +444,15 @@
       </ul>
       <p class="spot-ing"><strong>Inside:</strong> L-Citrulline · Beetroot Extract · Ginkgo Biloba · Cayenne · Vitamin B12.</p>
       <div class="spot-buy">
-        <div class="spot-price">$39.99 <span>/ single bottle</span></div>
+        <div class="spot-price" id="spotPrice">$240 <span>/ 3 bottles</span></div>
       </div>
-      <div class="spot-actions" style="margin-top:18px;">
-        <button class="btn btn-primary" data-buy="circulation">Add Single, $39.99</button>
-        <button class="btn btn-pack" data-buy="circulation3">Add 3-Pack, $99</button>
+      <div class="spot-actions" id="spotTiers" style="margin-top:18px;">
+        <button class="btn btn-pack" data-tier="1">1 Bottle, $149</button>
+        <button class="btn btn-pack" data-tier="2">2 Bottles, $180</button>
+        <button class="btn btn-primary" data-tier="3">3 Bottles, $240</button>
+      </div>
+      <div class="spot-actions" style="margin-top:14px;">
+        <button class="btn btn-primary" id="spotAdd">Add 3 Bottles, $240</button>
       </div>
       <p class="spot-disc">A dietary supplement. Not intended to diagnose, treat, cure, or prevent any disease. Consult your healthcare provider before use, especially if pregnant, nursing, or taking medication.</p>
     </div>
@@ -624,10 +628,8 @@
 
 <script>
 const PRODUCTS = [
-  { slug:'circulation', cat:'feature', kind:'Blood Flow & Circulation', name:'Circulation', price:39.99, img:'circulation.png',
+  { slug:'circulation', cat:'feature', kind:'Blood Flow & Circulation', name:'Circulation', price:240.00, img:'circulation.png', supplement:true,
     desc:'A blood-flow and circulation supplement built around racket sport. Supports healthy circulation, endurance and leg freshness between games, and a faster warm-up and recovery. Inside: L-Citrulline, Beetroot Extract, Ginkgo Biloba, Cayenne, and Vitamin B12. A dietary supplement, not intended to diagnose, treat, cure, or prevent any disease.' },
-  { slug:'circulation3', cat:'feature', kind:'Circulation · 3-Pack', name:'Circulation 3-Pack', price:99.00, img:'circulation.png',
-    desc:'Three bottles of Circulation at a bundled price, for players who keep it in the morning routine through a full season. Same formula: L-Citrulline, Beetroot Extract, Ginkgo Biloba, Cayenne, Vitamin B12. A dietary supplement, not intended to diagnose, treat, cure, or prevent any disease.' },
 
   // On-court gear
   { slug:'grip', cat:'court', kind:'Overgrip Tape', name:'Cushioned Overgrip', price:11.99, img:'grip.png',
@@ -644,14 +646,24 @@ const PRODUCTS = [
   // Carry & recover
   { slug:'towel', cat:'essentials', kind:'Court Towel', name:'Microfiber Court Towel', price:16.99, img:'towel.png',
     desc:'A quick-drying microfiber towel that packs small and dries fast between games. Folds into a side pocket without soaking your bag. One size.' },
-  { slug:'bottle', cat:'essentials', kind:'Water Bottle', name:'Insulated Water Bottle', price:28.99, img:'bottle.jpg',
-    desc:'An insulated bottle that keeps water cold through a long session in the sun. Leak-resistant lid, easy one-hand drink. One size.' },
-  { slug:'bag', cat:'essentials', kind:'Sling Bag', name:'Court Sling Bag', price:44.99, img:'bag.png',
-    desc:'A compact crossbody sling that holds a couple of paddles, balls, a bottle, and your keys. Adjustable strap, lives in the car. One size.' },
+  { slug:'bottle', cat:'essentials', kind:'Water Bottle', name:'Stainless Steel Water Bottle', price:28.99, img:'bottle.jpg',
+    desc:'An insulated stainless steel water bottle that keeps water cold through a long session in the sun. Brushed metal finish, screw cap, easy one-hand drink. One size.' },
+  { slug:'bag', cat:'essentials', kind:'Crossbody Sling Bag', name:'Navy Crossbody Sling Bag', price:44.99, img:'bag.jpg',
+    desc:'A lightweight navy crossbody sling bag for pickleball, with a carbon-look finish and an adjustable strap. Holds a couple of paddles, balls, a bottle, and your keys. Lives in the car. One size.' },
 ];
 
 const PRODUCTS_INDEX = Object.fromEntries(PRODUCTS.map(p => [p.slug, p]));
-const VARIANTS = { socks: { label: 'Size', options: ['S/M', 'L/XL'] } };
+// Standard supplement pricing tiers for Circulation.
+const SUPP_TIERS = [
+  { id:'1', label:'1 Bottle',  price:149.00 },
+  { id:'2', label:'2 Bottles', price:180.00 },
+  { id:'3', label:'3 Bottles', price:240.00 },
+];
+const SUPP_DEFAULT = '3';
+const VARIANTS = {
+  socks: { label: 'Size', options: ['S/M', 'L/XL'] },
+  circulation: { label: 'Supply', tiers: SUPP_TIERS, defaultId: SUPP_DEFAULT },
+};
 const STORAGE_KEY = 'baseline_cart';
 
 function loadCart() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; } }
@@ -699,11 +711,11 @@ function renderStrips() {
 }
 
 // ─── Modal ───
-let modalProduct = null, modalOpt = null;
+let modalProduct = null, modalOpt = null, modalTier = null;
 function openModal(slug) {
   const p = PRODUCTS_INDEX[slug];
   if (!p) return;
-  modalProduct = p; modalOpt = null;
+  modalProduct = p; modalOpt = null; modalTier = null;
   document.getElementById('modalImg').src = `images/${p.img}`;
   document.getElementById('modalImg').alt = p.name;
   document.getElementById('modalKind').textContent = p.kind;
@@ -714,7 +726,29 @@ function openModal(slug) {
   const opts = document.getElementById('opts');
   const add = document.getElementById('modalAdd');
   const v = VARIANTS[p.slug];
-  if (v) {
+  if (v && v.tiers) {
+    // Priced supply tiers (supplement).
+    optWrap.hidden = false;
+    document.getElementById('optLabel').textContent = v.label;
+    opts.innerHTML = v.tiers.map(t => `<button class="opt-chip" data-tier="${t.id}">${t.label} · ${fmt(t.price)}</button>`).join('');
+    const selectTier = (t, chip) => {
+      opts.querySelectorAll('.opt-chip').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+      modalOpt = t.label;
+      modalTier = t;
+      document.getElementById('modalPrice').textContent = fmt(t.price);
+      add.disabled = false;
+      add.textContent = `Add ${t.label}, ${fmt(t.price)}`;
+    };
+    opts.querySelectorAll('.opt-chip').forEach(chip => {
+      const t = v.tiers.find(x => x.id === chip.dataset.tier);
+      chip.addEventListener('click', () => selectTier(t, chip));
+    });
+    // Default-select the configured tier (3 Bottles).
+    const defChip = opts.querySelector(`.opt-chip[data-tier="${v.defaultId}"]`);
+    const defTier = v.tiers.find(x => x.id === v.defaultId);
+    if (defChip && defTier) selectTier(defTier, defChip);
+  } else if (v) {
     optWrap.hidden = false;
     document.getElementById('optLabel').textContent = v.label;
     opts.innerHTML = v.options.map(o => `<button class="opt-chip" data-opt="${o}">${o}</button>`).join('');
@@ -751,25 +785,47 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal
 document.getElementById('modalAdd').addEventListener('click', () => {
   if (!modalProduct) return;
   if (VARIANTS[modalProduct.slug] && !modalOpt) return;
-  addToCart(modalProduct, modalOpt);
+  addToCart(modalProduct, modalOpt, modalTier ? modalTier.price : null);
   closeModal();
   toast(`${modalProduct.name}${modalOpt ? ' · ' + modalOpt : ''} added`);
 });
 
-// ─── Spotlight buy buttons ───
-document.querySelectorAll('[data-buy]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const p = PRODUCTS_INDEX[btn.dataset.buy];
-    addToCart(p, null);
-    toast(`${p.name} added`);
+// ─── Spotlight supplement tier selector ───
+(function() {
+  const tierWrap = document.getElementById('spotTiers');
+  const priceEl = document.getElementById('spotPrice');
+  const addBtn = document.getElementById('spotAdd');
+  if (!tierWrap || !addBtn) return;
+  let chosen = SUPP_TIERS.find(t => t.id === SUPP_DEFAULT);
+  function paint() {
+    tierWrap.querySelectorAll('[data-tier]').forEach(b => {
+      const on = b.dataset.tier === chosen.id;
+      b.classList.toggle('btn-primary', on);
+      b.classList.toggle('btn-pack', !on);
+    });
+    priceEl.innerHTML = `${fmt(chosen.price)} <span>/ ${chosen.label.toLowerCase()}</span>`;
+    addBtn.textContent = `Add ${chosen.label}, ${fmt(chosen.price)}`;
+  }
+  tierWrap.querySelectorAll('[data-tier]').forEach(b => {
+    b.addEventListener('click', () => {
+      chosen = SUPP_TIERS.find(t => t.id === b.dataset.tier);
+      paint();
+    });
   });
-});
+  addBtn.addEventListener('click', () => {
+    const p = PRODUCTS_INDEX['circulation'];
+    addToCart(p, chosen.label, chosen.price);
+    toast(`${p.name} · ${chosen.label} added`);
+  });
+  paint();
+})();
 
 // ─── Cart ───
-function addToCart(p, opt) {
+function addToCart(p, opt, priceOverride) {
+  const price = (priceOverride != null) ? priceOverride : p.price;
   const existing = cart.find(l => l.slug === p.slug && l.opt === (opt || null));
   if (existing) existing.qty += 1;
-  else cart.push({ slug: p.slug, name: p.name, price: p.price, opt: opt || null, qty: 1 });
+  else cart.push({ slug: p.slug, name: p.name, price: price, opt: opt || null, qty: 1 });
   saveCart(cart); renderCart(); openCart();
 }
 function removeLine(slug, opt) { cart = cart.filter(l => !(l.slug === slug && l.opt === opt)); saveCart(cart); renderCart(); }
